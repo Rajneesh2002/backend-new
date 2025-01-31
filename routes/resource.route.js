@@ -19,6 +19,7 @@ router.post(
       createdBy: req.user.id,
     });
     await newResource.save();
+    console.log("New Resource created successfully!!");
     res.status(201).json(newResource);
   }
 );

@@ -12,16 +12,31 @@ router.post("/register", validateUser, async (req, res) => {
 
   try {
     const userExists = await User.findOne({ email });
+    
     if (userExists)
       return res.status(400).json({ message: "User aleady exists" });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    if (role !== "user" || role !== "admin")
+      res
+        .status(500)
+        .json({
+          message: "Invalid role! Role must be either 'admin' or 'user'"
+        });
+    if (name.length > 255 || email.length > 255 || password.length > 255)
+      res
+        .status(500)
+        .json({ message: "Strings can have at max 255 characters" });
 
     const user = new User({ name, email, password: hashedPassword, role });
     await user.save();
-    // console.log(user);
 
-    res.status(201).json({ message: `User created successfully with username - ${user.name}` });
+    res
+      .status(201)
+      .json({
+        message: `${user.role} created successfully with username - ${user.name}`
+      });
   } catch (error) {
     res.status(500).json({ message: "User registration failed" });
   }
