@@ -8,6 +8,7 @@ import resourceRoutes from "./routes/resource.route.js";
 const app = express();
 
 dotenv.config();
+app.use(express.static('public'))
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -19,7 +20,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/resource", resourceRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello there!");
+  res.render("index.html");
 });
 
 app.listen(port, () => {
