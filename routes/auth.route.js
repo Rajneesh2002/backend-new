@@ -18,7 +18,7 @@ router.post("/register", validateUser, async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    if (role !== "user" || role !== "admin")
+    if (role != "user" || role != "admin")
       res
         .status(500)
         .json({
